@@ -1,0 +1,324 @@
+archetype (adl_version=1.4)
+	openEHR-EHR-OBSERVATION.tooth_examination.v0
+
+concept
+	[at0000]	-- Tooth examination
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"Record of the examination of a single tooth, primarily intended for use within the Mouth Examination archetype">
+			use = <"Used as a subunit of the Mouth Examination archetype">
+			keywords = <"tooth, teeth", "dental", "odonto", "dentistry", "orthodontic", "palmer", "FDI", "notation", "mouth", "caries">
+			misuse = <"Stand-alone use of this archetype for examination of a single tooth is not the primary intention of this archetype.">
+			copyright = <"copyright openodonto 2016">
+		>
+	>
+	lifecycle_state = <"OrganisationDraft">
+	other_contributors = <>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"1950DD81B4108BFB9788EB817C808F8A">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Tooth examination
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Tooth Type
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0038, 	-- Deciduous Incisor
+													at0039, 	-- Deciduous Canine
+													at0040, 	-- Deciduous Molar
+													at0041, 	-- Deciduous Supernumerary
+													at0042, 	-- Permanent Incisor
+													at0043, 	-- Permanent Canine
+													at0044, 	-- Permanent Molar
+													at0045, 	-- Permanent Premolar
+													at0046]	-- Permanent Supernumerary
+												}
+											}
+										}
+									}
+									ELEMENT[at0047] occurrences matches {0..1} matches {	-- Tooth Status
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0048, 	-- Present
+													at0049, 	-- Absent
+													at0050]	-- Replaced
+												}
+											}
+										}
+									}
+									CLUSTER[at0007] occurrences matches {0..1} matches {	-- Canonical Location
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0006] occurrences matches {0..1} matches {	-- Upper/Lower
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0010, 	-- Upper
+															at0011]	-- Lower
+														}
+													}
+												}
+											}
+											ELEMENT[at0008] occurrences matches {0..1} matches {	-- Left/Right
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0012, 	-- Left
+															at0013]	-- Right
+														}
+													}
+												}
+											}
+											ELEMENT[at0014] occurrences matches {0..1} matches {	-- Numerical Index
+												value matches {
+													DV_COUNT matches {
+														magnitude matches {|1..10|}
+													}
+												}
+											}
+										}
+									}
+									ELEMENT[at0020] occurrences matches {0..1} matches {	-- Exposure
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0021, 	-- Erupted
+													at0022, 	-- Unerupted
+													at0023]	-- Partially Erupted
+												}
+											}
+										}
+									}
+									CLUSTER[at0024] occurrences matches {0..1} matches {	-- Orientation
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0025] occurrences matches {0..1} matches {	-- Rotation
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0035, 	-- Mesially
+															at0036]	-- Distally
+														}
+													}
+												}
+											}
+											ELEMENT[at0026] occurrences matches {0..1} matches {	-- Inclination
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0030, 	-- Proclined
+															at0031, 	-- Retroclined
+															at0032, 	-- Buccal
+															at0033, 	-- Lingual
+															at0034]	-- Palatal
+														}
+													}
+												}
+											}
+										}
+									}
+									allow_archetype ELEMENT[at0037] occurrences matches {0..*} matches {	-- Tooth Pathology
+										include
+											archetype_id/value matches {/.*/}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Tooth examination">
+					description = <"Recording of the examination of a single tooth.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"*">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Tooth Type">
+					description = <"Type of the tooth">
+				>
+				["at0006"] = <
+					text = <"Upper/Lower">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"Canonical Location">
+					description = <"Location of the tooth within the oral cavity, using reference points with as few external semantic dependencies as possible (Palmer's right/left/upper/lower, rather than FDI's 1/2/3/4). Based on Palmer notation, but 1-8 index extended to allow for indexing of supernumerary teeth.">
+				>
+				["at0008"] = <
+					text = <"Left/Right">
+					description = <"*">
+				>
+				["at0010"] = <
+					text = <"Upper">
+					description = <"*">
+				>
+				["at0011"] = <
+					text = <"Lower">
+					description = <"*">
+				>
+				["at0012"] = <
+					text = <"Left">
+					description = <"*">
+				>
+				["at0013"] = <
+					text = <"Right">
+					description = <"*">
+				>
+				["at0014"] = <
+					text = <"Numerical Index">
+					description = <"*">
+				>
+				["at0020"] = <
+					text = <"Exposure">
+					description = <"State of exposure/eruption of the tooth.">
+				>
+				["at0021"] = <
+					text = <"Erupted">
+					description = <"">
+				>
+				["at0022"] = <
+					text = <"Unerupted">
+					description = <"">
+				>
+				["at0023"] = <
+					text = <"Partially Erupted">
+					description = <"">
+				>
+				["at0024"] = <
+					text = <"Orientation">
+					description = <"Orientation of the tooth with respect to the mandible or maxilla">
+				>
+				["at0025"] = <
+					text = <"Rotation">
+					description = <"Rotation of the tooth with respect to the mandible or maxilla.">
+				>
+				["at0026"] = <
+					text = <"Inclination">
+					description = <"Inclination of the tooth with respect to the mandible or maxilla.">
+				>
+				["at0030"] = <
+					text = <"Proclined">
+					description = <"">
+				>
+				["at0031"] = <
+					text = <"Retroclined">
+					description = <"">
+				>
+				["at0032"] = <
+					text = <"Buccal">
+					description = <"">
+				>
+				["at0033"] = <
+					text = <"Lingual">
+					description = <"">
+				>
+				["at0034"] = <
+					text = <"Palatal">
+					description = <"">
+				>
+				["at0035"] = <
+					text = <"Mesially">
+					description = <"Rotation in mesial direction">
+				>
+				["at0036"] = <
+					text = <"Distally">
+					description = <"Rotation in the distal direction">
+				>
+				["at0037"] = <
+					text = <"Tooth Pathology">
+					description = <"Slot to contain Tooth Pathological State archetype">
+				>
+				["at0038"] = <
+					text = <"Deciduous Incisor">
+					description = <"Synonymous with Primary Incisor">
+				>
+				["at0039"] = <
+					text = <"Deciduous Canine">
+					description = <"Synonymous with Primary Canine">
+				>
+				["at0040"] = <
+					text = <"Deciduous Molar">
+					description = <"Synonymous with Primary Molar">
+				>
+				["at0041"] = <
+					text = <"Deciduous Supernumerary">
+					description = <"Synonymous with Primary Supernumerary">
+				>
+				["at0042"] = <
+					text = <"Permanent Incisor">
+					description = <"Synonymous with Secondary Incisor">
+				>
+				["at0043"] = <
+					text = <"Permanent Canine">
+					description = <"Synonymous with Secondary Canine">
+				>
+				["at0044"] = <
+					text = <"Permanent Molar">
+					description = <"Synonymous with Secondary Molar">
+				>
+				["at0045"] = <
+					text = <"Permanent Premolar">
+					description = <"Synonymous with Secondary Premolar">
+				>
+				["at0046"] = <
+					text = <"Permanent Supernumerary">
+					description = <"Synonymous with Secondary Supernumerary">
+				>
+				["at0047"] = <
+					text = <"Tooth Status">
+					description = <"Presence or absence of the tooth, or whether it is replaced.">
+				>
+				["at0048"] = <
+					text = <"Present">
+					description = <"*">
+				>
+				["at0049"] = <
+					text = <"Absent">
+					description = <"*">
+				>
+				["at0050"] = <
+					text = <"Replaced">
+					description = <"*">
+				>
+			>
+		>
+	>
