@@ -1,0 +1,400 @@
+﻿archetype (adl_version=1.4; uid=5dcdb304-4e4f-4bfb-8bbe-ac45c5433199)
+	openEHR-EHR-CLUSTER.exam_tooth.v0
+
+concept
+	[at0000]	-- Examination of a tooth
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["organisation"] = <"Ocean Informatics">
+		["date"] = <"2015-06-22">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the tongue.">
+			use = <"Use to record a narrative description of the overall findings observed during the physical examination of the tongue. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
+
+This archetype has been specifically designed to be used in the 'Examination detail' SLOT within the OBSERVATION.exam archetype, but can also be used within other Examination OBSERVATION or CLUSTER archetypes, where clinically appropriate - for example, CLUSTER.exam_mouth.
+
+The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
+
+Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
+			misuse = <"Not to be used for recording data not related to the physical examination of the tongue.
+
+Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
+
+Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"NotSet">
+	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia">
+	other_details = <
+		["revision"] = <"0.0.1-alpha">
+		["original_publisher"] = <"openEHR Foundation">
+		["build_uid"] = <"2a46f779-f041-438c-abc9-8c05dc579c1a">
+		["original_namespace"] = <"org.openehr">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["MD5-CAM-1.0.1"] = <"5A20BF9D42CCDCA8A98A5A08C61A5025">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Examination of a tooth
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True}
+					}
+				}
+			}
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Clinical description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.dimensions(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Clinical interpretation
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Exam not done
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0015] occurrences matches {0..1} matches {	-- Tooth Status
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0018, 	-- Present
+							at0019, 	-- Absent
+							at0020]	-- Replaced
+						}
+					}
+				}
+			}
+			ELEMENT[at0016] occurrences matches {0..1} matches {	-- Tooth Type
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0021, 	-- Deciduous Incisor
+							at0022, 	-- Deciduous Canine
+							at0023, 	-- Deciduous Molar
+							at0024, 	-- Deciduous Supernumerary
+							at0025, 	-- Permanent Incisor
+							at0026, 	-- Permanent Canine
+							at0027, 	-- Permanent Molar
+							at0028, 	-- Permanent Premolar
+							at0029, 	-- Permanent Supernumerary
+							at0030]	-- Neonatal
+						}
+					}
+				}
+			}
+			CLUSTER[at0037] occurrences matches {0..1} matches {	-- Tooth Location
+				items cardinality matches {1..*; unordered} matches {
+					CLUSTER[at0031] occurrences matches {0..1} matches {	-- Canonical Location
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0041] occurrences matches {0..1} matches {	-- Numerical Index
+								value matches {
+									DV_COUNT matches {
+										magnitude matches {|1..11|}
+									}
+								}
+							}
+							ELEMENT[at0039] occurrences matches {0..1} matches {	-- Quadrant
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0042, 	-- Upper Right
+											at0043, 	-- Upper Left
+											at0044, 	-- Lower Left
+											at0045]	-- Lower Right
+										}
+									}
+								}
+							}
+						}
+					}
+					ELEMENT[at0036] occurrences matches {0..1} matches {	-- Universal Numbering System
+						value matches {
+							DV_COUNT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0033] occurrences matches {0..*} matches {	-- FDI Notation
+						include
+							archetype_id/value matches {/.*/}
+					}
+					allow_archetype CLUSTER[at0032] occurrences matches {0..*} matches {	-- Palmer Notation
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+			ELEMENT[at0046] occurrences matches {0..1} matches {	-- Tooth Exposure
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0047, 	-- Erupted
+							at0048, 	-- Partially Erupted
+							at0049]	-- Unerupted
+						}
+					}
+				}
+			}
+			CLUSTER[at0050] occurrences matches {0..1} matches {	-- Tooth Orientation
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0052] occurrences matches {0..1} matches {	-- Rotation
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0053, 	-- Mesially
+									at0054]	-- Distally
+								}
+							}
+						}
+					}
+					ELEMENT[at0051] occurrences matches {0..1} matches {	-- Inclination
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0055, 	-- Proclined
+									at0056, 	-- Retroclined
+									at0057, 	-- Buccal
+									at0058, 	-- Lingual
+									at0059]	-- Palatal
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Examination of a tooth">
+					description = <"Findings observed during the physical examination of a tooth">
+				>
+				["at0002"] = <
+					text = <"No abnormality detected">
+					description = <"Statement that no abnormality was detected (NAD) on physical examination.">
+					comment = <"Record as True if no abnormality was detected on examination. Specific statements about the examination can be included in the 'Clinical Interpretation' data element.">
+				>
+				["at0003"] = <
+					text = <"Clinical description">
+					description = <"Narrative description of the overall findings observed during the physical examination.">
+				>
+				["at0004"] = <
+					text = <"Examination findings">
+					description = <"Structured details about the  physical examination findings.">
+				>
+				["at0005"] = <
+					text = <"Multimedia representation">
+					description = <"Digital image, video or diagram representing the physical examination findings.">
+				>
+				["at0006"] = <
+					text = <"Clinical interpretation">
+					description = <"Single word, phrase or brief description that represents the clinical meaning and significance of the physical examination findings.">
+				>
+				["at0007"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the physical examination findings, not captured in other fields.">
+				>
+				["at0008"] = <
+					text = <"Exam not done">
+					description = <"Details to explicitly record that this examination was not performed.">
+				>
+				["at0015"] = <
+					text = <"Tooth Status">
+					description = <"Presence or absence of the tooth, or whether it is replaced.">
+				>
+				["at0016"] = <
+					text = <"Tooth Type">
+					description = <"Type of the tooth">
+				>
+				["at0018"] = <
+					text = <"Present">
+					description = <"Tooth is present within the mouth">
+				>
+				["at0019"] = <
+					text = <"Absent">
+					description = <"Tooth is absent from the mouth">
+				>
+				["at0020"] = <
+					text = <"Replaced">
+					description = <"Tooth is a replaced tooth">
+				>
+				["at0021"] = <
+					text = <"Deciduous Incisor">
+					description = <"Tooth is part of the deciduous (synonyms: primary, milk) dentition and is an incisor">
+				>
+				["at0022"] = <
+					text = <"Deciduous Canine">
+					description = <"Tooth is part of the deciduous (synonyms: primary, milk) dentition and is a canine">
+				>
+				["at0023"] = <
+					text = <"Deciduous Molar">
+					description = <"Tooth is part of the deciduous (synonyms: primary, milk) dentition and is a molar">
+				>
+				["at0024"] = <
+					text = <"Deciduous Supernumerary">
+					description = <"Tooth is part of the deciduous (synonyms: primary, milk) dentition and is a supernumerary tooth">
+				>
+				["at0025"] = <
+					text = <"Permanent Incisor">
+					description = <"Tooth is part of the permanent (synonyms: secondary, adult) dentition and is an incisor">
+				>
+				["at0026"] = <
+					text = <"Permanent Canine">
+					description = <"Tooth is part of the permanent (synonyms: secondary, adult) dentition and is a canine">
+				>
+				["at0027"] = <
+					text = <"Permanent Molar">
+					description = <"Tooth is part of the permanent (synonyms: secondary, adult) dentition and is a molar">
+				>
+				["at0028"] = <
+					text = <"Permanent Premolar">
+					description = <"Tooth is part of the permanent (synonyms: secondary, adult) dentition and is a premolar">
+				>
+				["at0029"] = <
+					text = <"Permanent Supernumerary">
+					description = <"Tooth is part of the permanent (synonyms: secondary, adult) dentition and is a supernumerary tooth">
+				>
+				["at0030"] = <
+					text = <"Neonatal">
+					description = <"Tooth is a neonatal tooth">
+				>
+				["at0031"] = <
+					text = <"Canonical Location">
+					description = <"The 'canonical location' of the tooth within the mouth, without reference to external descriptions of location such as Palmer Notation (which limits the numerical argument to 1-8) or FDI Notation (which arbitrarily assigns a number to a quadrant of the mouth)">
+				>
+				["at0032"] = <
+					text = <"Palmer Notation">
+					description = <"Slot for tooth location in Palmer Notation">
+				>
+				["at0033"] = <
+					text = <"FDI Notation">
+					description = <"*">
+				>
+				["at0036"] = <
+					text = <"Universal Numbering System">
+					description = <"Tooth location using the Univeral Numbering System count.">
+					comment = <"See https://en.wikipedia.org/wiki/Universal_Numbering_System">
+				>
+				["at0037"] = <
+					text = <"Tooth Location">
+					description = <"*">
+				>
+				["at0039"] = <
+					text = <"Quadrant">
+					description = <"*">
+				>
+				["at0041"] = <
+					text = <"Numerical Index">
+					description = <"*">
+				>
+				["at0042"] = <
+					text = <"Upper Right">
+					description = <"*">
+				>
+				["at0043"] = <
+					text = <"Upper Left">
+					description = <"*">
+				>
+				["at0044"] = <
+					text = <"Lower Left">
+					description = <"*">
+				>
+				["at0045"] = <
+					text = <"Lower Right">
+					description = <"*">
+				>
+				["at0046"] = <
+					text = <"Tooth Exposure">
+					description = <"*">
+				>
+				["at0047"] = <
+					text = <"Erupted">
+					description = <"*">
+				>
+				["at0048"] = <
+					text = <"Partially Erupted">
+					description = <"*">
+				>
+				["at0049"] = <
+					text = <"Unerupted">
+					description = <"*">
+				>
+				["at0050"] = <
+					text = <"Tooth Orientation">
+					description = <"Orientation of the tooth with respect to the mandible or maxilla.">
+				>
+				["at0051"] = <
+					text = <"Inclination">
+					description = <"Inclination of the tooth with respect to the mandible or maxilla.">
+				>
+				["at0052"] = <
+					text = <"Rotation">
+					description = <"Rotation of the tooth with respect to the mandible or maxilla.">
+				>
+				["at0053"] = <
+					text = <"Mesially">
+					description = <"*">
+				>
+				["at0054"] = <
+					text = <"Distally">
+					description = <"*">
+				>
+				["at0055"] = <
+					text = <"Proclined">
+					description = <"*">
+				>
+				["at0056"] = <
+					text = <"Retroclined">
+					description = <"*">
+				>
+				["at0057"] = <
+					text = <"Buccal">
+					description = <"*">
+				>
+				["at0058"] = <
+					text = <"Lingual">
+					description = <"*">
+				>
+				["at0059"] = <
+					text = <"Palatal">
+					description = <"*">
+				>
+			>
+		>
+	>
